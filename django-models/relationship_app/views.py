@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
-from .models import Library, Book
+from django.views.generic.detail import DetailView  # Import the DetailView class
+from .models import Book, Library
 
 def list_books(request):
     books = Book.objects.all()
@@ -8,10 +8,12 @@ def list_books(request):
 
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = 'relationship_app/library_detail.html'  # Specify the template path
+    template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['books'] = self.object.books.all()  # Add books associated with the library
+        context['books'] = self.object.books.all()  # Add the list of books in the library
         return context
+
+
