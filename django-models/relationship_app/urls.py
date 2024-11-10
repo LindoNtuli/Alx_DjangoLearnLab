@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import list_books, LibraryDetailView
+from .views import register, user_login, user_logout
 
 urlpatterns = [
     path('books/', list_books, name='list_books'),
@@ -10,4 +11,10 @@ from django.urls import path, include
 urlpatterns = [
     path('relationship/', include('relationship_app.urls')),
     # other URL patterns...
+]
+urlpatterns = [
+    path('register/', register, name='register'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
+    # Add other URL patterns
 ]
