@@ -7,7 +7,7 @@ from django.urls import path
 from .views import register  # Import the register view
 
 urlpatterns = [
-    path('register/', register, name='view.register'),  # Link to the registration view
+    path('register/', register, name='relationship_app.urls'),  # Link to the registration view
     # You can add more URL patterns for login and logout as needed
 ]
 
