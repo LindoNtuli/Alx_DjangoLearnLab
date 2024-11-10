@@ -1,12 +1,16 @@
 from django.urls import path
-from .views import register
 from .views import user_login, user_logout
 from .views import list_books, LibraryDetailView
 from django.contrib.auth.views import LoginView, LogoutView 
 
+from django.urls import path
+from .views import register  # Import the register view
+
 urlpatterns = [
-    path('register/', register, name='register'),
+    path('register/', register, name='register'),  # Link to the registration view
+    # You can add more URL patterns for login and logout as needed
 ]
+
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),  # Login view
     path('logout/', LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
