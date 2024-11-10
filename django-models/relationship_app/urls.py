@@ -2,7 +2,7 @@ from django.urls import path
 from .views import register  # Import the register view
 
 urlpatterns = [
-    path('register/', register, name='register'),  # Link to the registration view
+    path('register/', register, name='relationship_app/register.html'),  # Link to the registration view
 ]
 from .views import user_login, user_logout
 from .views import list_books, LibraryDetailView
