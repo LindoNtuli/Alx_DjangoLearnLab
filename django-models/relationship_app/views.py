@@ -1,27 +1,24 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.generic.detail import DetailView
-from django.contrib.auth.views import LoginView, LogoutView, RegisterView
+from django.contrib.auth.views import LoginView, LogoutView
 from .models import Library, Book
 from django.urls import reverse
 
-# User Registration View
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('home')  # Redirect to a home page after registration
+            form.save()  # Save the new user
+            return redirect('home')  # Redirect to home or another page after registration
     else:
-        form = UserCreationForm()
+        form = UserCreationForm()  # Show the empty form
+
     return render(request, 'relationship_app/register.html', {'form': form})
+# User Registration View
 
 # User Login View
 def user_login(request):
