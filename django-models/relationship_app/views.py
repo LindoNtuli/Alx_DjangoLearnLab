@@ -9,6 +9,34 @@ from .models import Library, Book
 from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Book
+
+@permission_required('yourapp.can_add_book')
+def add_book(request):
+    if request.method == 'POST':
+        # Handle book creation logic
+        pass
+    return render(request, 'add_book.html')
+
+@permission_required('yourapp.can_change_book')
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        # Handle book update logic
+        pass
+    return render(request, 'edit_book.html', {'book': book})
+
+@permission_required('yourapp.can_delete_book')
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        # Handle book deletion logic
+        book.delete()
+        return redirect('book_list')
+    return render(request, 'confirm_delete.html', {'book': book})
+
 
 def is_admin(user):
     return user.is_authenticated and user.userprofile.role == 'Admin'
