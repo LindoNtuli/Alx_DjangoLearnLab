@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import register
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -10,12 +10,12 @@ from django.urls import reverse
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = register(request.POST)
         if form.is_valid():
             form.save()  # Save the new user
             return redirect('home')  # Redirect to home or another page after registration
     else:
-        form = UserCreationForm()  # Show the empty form
+        form = register()  # Show the empty form
 
     return render(request, 'relationship_app/register.html', {'form': form})
 # User Registration View
