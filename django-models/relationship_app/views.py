@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.views.generic.detail import DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import Library, Book
@@ -59,17 +58,20 @@ def librarian_view(request):
 def member_view(request):
     return render(request, 'member_view.html')
 
+# User Registration View
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()  # Save the new user
-            return redirect('home')  # Redirect to home or another page after registration
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')  # Redirect to a home page after registration
     else:
-        form = UserCreationForm()  # Show the empty form
-
-    return render(request, 'relationship_app/register.html', {'form': form})
-# User Registration View
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 # User Login View
 def user_login(request):
