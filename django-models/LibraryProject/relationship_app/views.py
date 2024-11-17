@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import Library, Book
@@ -36,28 +36,6 @@ def delete_book(request, book_id):
         return redirect('book_list')
     return render(request, 'confirm_delete.html', {'book': book})
 
-
-def Admin(user):
-    return user.is_authenticated and user.userprofile.role == 'Admin'
-
-@login_required
-@user_passes_test(Admin)
-def admin_view(request):
-    return render(request, 'admin_template.html', {})
-
-def is_librarian(user):
-    return user.userprofile.role == 'Librarian'
-
-@user_passes_test(is_librarian)
-def librarian_view(request):
-    return render(request, 'librarian_view.html')
-
-def is_member(user):
-    return user.userprofile.role == 'Member'
-
-@user_passes_test(is_member)
-def member_view(request):
-    return render(request, 'member_view.html')
 
 # User Registration View
 def register(request):
