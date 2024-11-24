@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to a CSS file for styling -->
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Librarian Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'librarian_view' %}">Home</a></li>
+                <li><a href="{% url 'some_other_view' %}">Manage Books</a></li>
+                <li><a href="{% url 'another_view' %}">View Members</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Today's Tasks</h2>
+            <ul>
+                <li>Check book returns</li>
+                <li>Update inventory</li>
+                <li>Assist members with queries</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Recent Activities</h2>
+            <p>No recent activities logged.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Library Management System. All rights reserved.</p>
+    </footer>
+</body>
+</html>
