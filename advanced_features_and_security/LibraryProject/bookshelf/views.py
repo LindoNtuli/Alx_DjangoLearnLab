@@ -1,6 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Article
+from .models import Book  # Make sure to import your Book model
+
+def book_list(request):
+    books = Book.objects.all()  # Fetch all books from the database
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
 @permission_required('app_name.can_view', raise_exception=True)
 def article_list(request):
