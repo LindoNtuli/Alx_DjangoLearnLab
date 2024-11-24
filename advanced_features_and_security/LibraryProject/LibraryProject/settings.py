@@ -21,6 +21,10 @@ SESSION_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 31536000  # This sets HSTS to one year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
 SECURE_HSTS_PRELOAD = True  # Optional: Indicates that the site should be included in browsers' HSTS preload lists
+# settings.py
+
+# Add this setting to the existing configurations
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Redirect all HTTP requests to HTTPS
