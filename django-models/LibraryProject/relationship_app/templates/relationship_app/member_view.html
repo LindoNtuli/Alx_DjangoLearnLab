@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Area</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Member Area</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'member_view' %}">Home</a></li>
+                <li><a href="{% url 'librarian_view' %}">Librarian Section</a></li>
+                <li><a href="{% url 'admin_view' %}">Admin Panel</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Your Benefits as a Member</h2>
+        <p>As a valued member, you have access to exclusive content, resources, and community events.</p>
+        <p>Explore our features and enjoy your membership!</p>
+        <!-- Additional member-specific content can be added here -->
+    </main>
+
+    <footer>
+        <p>&copy; {{ current_year }} Your Company Name</p>
+    </footer>
+
+    <script src="{% static 'js/scripts.js' %}"></script> <!-- Link to your JavaScript file -->
+</body>
+</html>
