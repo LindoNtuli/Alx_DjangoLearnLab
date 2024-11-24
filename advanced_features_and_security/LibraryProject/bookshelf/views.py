@@ -6,7 +6,7 @@ from .forms import BookForm
 
 def book_create(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = ExampleForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('book_list')  # Redirect to your book list view
