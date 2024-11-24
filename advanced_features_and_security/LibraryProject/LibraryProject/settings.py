@@ -18,6 +18,10 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000  # This sets HSTS to one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Optional: Indicates that the site should be included in browsers' HSTS preload lists
+
 
 # Redirect all HTTP requests to HTTPS
 SECURE_SSL_REDIRECT = True
