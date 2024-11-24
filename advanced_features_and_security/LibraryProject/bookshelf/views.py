@@ -12,7 +12,7 @@ def example_view(request):
             return redirect('book_list')  # Redirect to your book list view
     else:
         form = ExampleForm()
-    return render(request, 'bookshelf/example_template.html', {'form': form})
+    return render(request, 'bookshelf/form_example.html', {'form': form})
 
 
 def book_list(request):
