@@ -12,6 +12,28 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book
 
+def is_admin(user):
+    return user.is_authenticated and user.userprofile.role == 'Admin'
+
+def is_librarian(user):
+    return user.is_authenticated and user.userprofile.role == 'Librarian'
+
+def is_member(user):
+    return user.is_authenticated and user.userprofile.role == 'Member'
+
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'member_view.html')
+
+
 @permission_required('yourapp.can_add_book')
 def add_book(request):
     if request.method == 'POST':
