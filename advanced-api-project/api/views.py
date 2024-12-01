@@ -6,17 +6,15 @@ from rest_framework import viewsets
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
 
-class BookViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing book instances.
-    This includes list, create, retrieve, update, and delete operations.
-    """
-    queryset = Book.objects.all()  # Get all books
-    serializer_class = BookSerializer  # Use the defined serializer for the Book model
-    
-    # Set permission classes for the viewset
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read-only access to unauthenticated users
+class BookListCreate(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allows read access for everyone, but requires authentication for creating a book
 
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Requires authentication for all actions on an individual book
     # List view to retrieve all books
 class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
