@@ -5,6 +5,23 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework import viewsets
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
+from django_filters import rest_framework as filters
+from rest_framework import filters
+
+class BookFilter(filters.FilterSet):
+    title = filters.CharFilter(lookup_expr='icontains')
+    author = filters.CharFilter(lookup_expr='icontains')
+    publication_year = filters.NumberFilter()
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_year']
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = BookFilter
 
 class BookViewSet(viewsets.ModelViewSet):
     """
@@ -12,6 +29,10 @@ class BookViewSet(viewsets.ModelViewSet):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    search_fields = ['title', 'author']  # Define searchable fields
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    ordering_fields = ['title', 'publication_year']  # Fields available for ordering
+    ordering = ['title']  # Default ordering if none specified
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
