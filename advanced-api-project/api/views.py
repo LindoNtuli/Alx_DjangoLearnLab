@@ -1,12 +1,23 @@
 # api/views.py
 from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework import viewsets
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
 
-# List view to retrieve all books
+class BookViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing book instances.
+    This includes list, create, retrieve, update, and delete operations.
+    """
+    queryset = Book.objects.all()  # Get all books
+    serializer_class = BookSerializer  # Use the defined serializer for the Book model
+    
+    # Set permission classes for the viewset
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read-only access to unauthenticated users
+
+    # List view to retrieve all books
 class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
