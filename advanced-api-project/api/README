@@ -1,13 +1,9 @@
-# Book API
+# Advanced API Project
 
 ## Overview
-This API allows for CRUD operations on a Book model.
+This project implements a RESTful API for managing books.
 
-## Endpoints
-- `GET /books/`: Retrieves a list of all books (public access).
-- `GET /books/<int:pk>/`: Retrieves details of a specific book (public access).
-- `POST /books/create/`: Creates a new book (authenticated users only).
-- `PUT /books/<int:pk>/update/`: Updates an existing book (authenticated users only).
-- `DELETE /books/<int:pk>/delete/`: Deletes a book (authenticated users only).
-
-##
+## API Endpoints
+- `GET /api/books/`: List all books (public).
+- `GET /api/books/<id>/`: Get details of a single book (public).
+- `POST /api/books

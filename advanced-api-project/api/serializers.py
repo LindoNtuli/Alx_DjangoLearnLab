@@ -2,10 +2,6 @@ from rest_framework import serializers
 from .models import Author, Book
 
 class BookSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the Book model.
-    Validates that the publication_year is not in the future.
-    """
     class Meta:
         model = Book
         fields = '__all__'

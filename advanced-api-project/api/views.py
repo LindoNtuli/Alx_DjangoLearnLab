@@ -6,30 +6,31 @@ from rest_framework import viewsets
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
 
-class BookViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing book instances.
-    This includes list, create, retrieve, update, and delete operations.
-    """
-    queryset = Book.objects.all()  # Get all books
-    serializer_class = BookSerializer  # Use the defined serializer for the Book model
-
-# List and Create Authors
-class AuthorListCreate(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-# Retrieve, Update, and Delete Author
-class AuthorDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-# List and Create Books
-class BookListCreate(generics.ListCreateAPIView):
+# List view to retrieve all books
+class BookList(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [AllowAny]  # Anyone can view
 
-# Retrieve, Update, and Delete Book
-class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+# Detail view for retrieving a single book by ID
+class BookDetail(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [AllowAny]  # Anyone can view
+
+# Create view for adding a new book
+class BookCreate(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Authenticated users only
+
+# Update view for modifying an existing book
+class BookUpdate(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Authenticated users only
+
+# Delete view for removing a book
+class BookDelete(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    permission_classes = [IsAuthenticated]  # Authenticated users only
