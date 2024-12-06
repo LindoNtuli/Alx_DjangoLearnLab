@@ -29,5 +29,4 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-    return render(request, 'registration/profile.html')
-
+    return render(request, 'registration/profile.html', {'user': request.user})
