@@ -1,4 +1,4 @@
-<h2>User Profile</h2>
-<p>Username: {{ user.username }}</p>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<h2>{{ user.username }}'s Profile</h2>
 <p>Email: {{ user.email }}</p>
-<a href="{% url 'logout' %}">Logout</a>
