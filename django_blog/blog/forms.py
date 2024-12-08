@@ -13,7 +13,7 @@ class CommentForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(), 
-        widget=forms.CheckboxSelectMultiple,  #Checkboxes for selecting multiple tags
+        widgets=forms.CheckboxSelectMultiple,  #Checkboxes for selecting multiple tags
         required=False  #optional
     )
 
