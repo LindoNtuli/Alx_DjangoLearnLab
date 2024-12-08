@@ -7,6 +7,8 @@ from django.urls import reverse_lazy
 from .models import Post
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
@@ -27,6 +29,11 @@ def register(request):
 
 class CustomLogoutView(LogoutView):
     next_page = '/'
+#end
+
+@login_required
+def profile_view(request):
+
 #end
     
 class PostListView(ListView):
