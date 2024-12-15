@@ -25,6 +25,11 @@ class LoginView(generics.GenericAPIView):
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
 
+class UserListView(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def follow_user(request, username):
