@@ -30,9 +30,8 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def follow_user(request, username):
+    permission_classes = [IsAuthenticated]
     try:
         user_to_follow = CustomUser.objects.get(username=username)
         request.user.following.add(user_to_follow)
@@ -40,9 +39,8 @@ def follow_user(request, username):
     except CustomUser.DoesNotExist:
         return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def unfollow_user(request, username):
+    permission_classes = [IsAuthenticated]
     try:
         user_to_unfollow = CustomUser.objects.get(username=username)
         request.user.following.remove(user_to_unfollow)
