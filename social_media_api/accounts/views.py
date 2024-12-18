@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .models import CustomUser
 from .serializers import UserSerializer, LoginSerializer
 from rest_framework import viewsets, permissions
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -25,19 +26,19 @@ class LoginView(generics.GenericAPIView):
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
 
-class UserListView(generics.ListAPIView):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def follow_user(request, user_id):
-    # Logic for following a user
-    return Response({"message": "You are now following the user."})
+    @action(detail=True, methods=['post'])
+    def follow_user(self, request, pk=None):
+        user_to_follow = self.get_object()
+        request.user.following.add(user_to_follow)
+        return Response({'status': 'following'})
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def unfollow_user(request, user_id):
-    # Logic for unfollowing a user
-    return Response({"message": "You have unfollowed the user."})
+    @action(detail=True, methods=['post'])
+    def unfollow_user(self, request, pk=None):
+        user_to_unfollow = self.get_object()
+        request.user.following.remove(user_to_unfollow)
+        return Response({'status': 'unfollowing'})
