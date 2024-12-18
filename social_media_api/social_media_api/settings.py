@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +42,17 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',  # For token authentication
     'accounts',
     'posts',
+    'storages',
 ]
+
+AWS_ACCESS_KEY_ID = 'm-access-key-id'
+AWS_SECRET_ACCESS_KEY = 'my-secret-access-key'
+AWS_STORAGE_BUCKET_NAME = 'my-bucket-name'
+AWS_S3_REGION_NAME = 'my-region'  # e.g., 'us-east-1'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Static files (CSS, JavaScript, Images) settings
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,6 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
