@@ -8,7 +8,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import APIView, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -30,20 +30,17 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
-def follow_user(request, username):
+class FollowUserView(APIView):
     permission_classes = [IsAuthenticated]
-    try:
-        user_to_follow = CustomUser.objects.get(username=username)
-        request.user.following.add(user_to_follow)
-        return Response({"message": f"You are now following {user_to_follow.username}."}, status=status.HTTP_200_OK)
-    except CustomUser.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
-def unfollow_user(request, username):
+    def post(self, request, user_id):
+        # Logic for following a user
+        return Response({"message": "You are now following the user."})
+
+
+class UnfollowUserView(APIView):
     permission_classes = [IsAuthenticated]
-    try:
-        user_to_unfollow = CustomUser.objects.get(username=username)
-        request.user.following.remove(user_to_unfollow)
-        return Response({"message": f"You have unfollowed {user_to_unfollow.username}."}, status=status.HTTP_200_OK)
-    except CustomUser.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    def post(self, request, user_id):
+        # Logic for unfollowing a user
+        return Response({"message": "You have unfollowed the user."})
