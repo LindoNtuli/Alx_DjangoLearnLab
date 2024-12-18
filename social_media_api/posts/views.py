@@ -1,9 +1,10 @@
 #posts views
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from .serializers import PostSerializer, CommentSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post
@@ -18,6 +19,26 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    @action(detail=True, methods=['post'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        Like.objects.get_or_create(user=request.user, post=post)
+        # Create a notification
+        self.create_notification(request.user, post, 'liked')
+        return Response({'status': 'liked'})
+
+    @action(detail=True, methods=['post'])
+    def unlike(self, request, pk=None):
+        post = self.get_object()
+        Like.objects.filter(user=request.user, post=post).delete()
+        return Response({'status': 'unliked'})
+
+    def create_notification(self, user, post, verb):
+        notification = Notification(recipient=post.author, actor=user, verb=verb,
+                                    target_content_type=ContentType.objects.get_for_model(post),
+                                    target_object_id=post.id)
+        notification.save()
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
