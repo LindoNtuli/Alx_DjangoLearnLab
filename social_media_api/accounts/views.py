@@ -8,7 +8,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import APIView, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -30,17 +30,14 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
-class FollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    # Logic for following a user
+    return Response({"message": "You are now following the user."})
 
-    def post(self, request, user_id):
-        # Logic for following a user
-        return Response({"message": "You are now following the user."})
-
-
-class UnfollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, user_id):
-        # Logic for unfollowing a user
-        return Response({"message": "You have unfollowed the user."})
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unfollow_user(request, user_id):
+    # Logic for unfollowing a user
+    return Response({"message": "You have unfollowed the user."})
