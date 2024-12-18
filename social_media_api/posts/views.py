@@ -1,7 +1,8 @@
 #posts views
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
-from .models import Post, Comment, Like
+from rest_framework import viewsets, permissions, generics
+from django.shortcuts import get_object_or_404
+from .models import Post, Comment, Like, Notification
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -20,25 +21,33 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    @action(detail=True, methods=['post'])
-    def like(self, request, pk=None):
-        post = self.get_object()
-        Like.objects.get_or_create(user=request.user, post=post)
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        # Create a Like entry
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+        
         # Create a notification
-        self.create_notification(request.user, post, 'liked')
-        return Response({'status': 'liked'})
+        if created:  # If the like was created (not an existing like)
+            Notification.objects.create(user=post.author, message=f"{request.user.username} liked your post.")
 
-    @action(detail=True, methods=['post'])
-    def unlike(self, request, pk=None):
-        post = self.get_object()
+        return Response({'status': 'liked', 'post_id': pk})
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        # Remove the Like entry if it exists
         Like.objects.filter(user=request.user, post=post).delete()
-        return Response({'status': 'unliked'})
+        
+        # Create a notification for unliking if necessary
+        Notification.objects.create(user=post.author, message=f"{request.user.username} unliked your post.")
+        
+        return Response({'status': 'unliked', 'post_id': pk})
 
-    def create_notification(self, user, post, verb):
-        notification = Notification(recipient=post.author, actor=user, verb=verb,
-                                    target_content_type=ContentType.objects.get_for_model(post),
-                                    target_object_id=post.id)
-        notification.save()
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
