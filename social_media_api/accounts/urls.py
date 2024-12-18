@@ -6,6 +6,6 @@ from .views import FollowViewSet
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
-    path('follow/<str:username>/', follow_user, name='follow_user'),
-    path('unfollow/<str:username>/', unfollow_user, name='unfollow_user'),
+    path('follow/<int:user-id>/', follow_user, name='follow_user'),
+    path('unfollow/<int::user_id>/', unfollow_user, name='unfollow_user'),
 ]
